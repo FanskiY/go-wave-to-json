@@ -24,7 +24,7 @@ func extractMinMaxValues(sourcePath string, rawFile *os.File) ([]int64, []int64)
 		log.Fatal(err)
 	}
 
-	widthInFloat := getWidth(sourcePath)
+	widthInFloat := 69.0
 	segmentSize := int(float64(rawfileInfo.Size())/widthInFloat+0.5) / NUMBER_OF_BYTES
 	width := int(widthInFloat)
 	maximumValues := make([]int64, width)
