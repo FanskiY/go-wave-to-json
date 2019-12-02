@@ -8,15 +8,17 @@ import (
 	"path/filepath"
 )
 
-func Generate(sourcePath string, jsonPath string, tmpPath string) {
+func Generate(sourcePath string, tmpPath string) string {
 	sourceFilename, err := filepath.Abs(sourcePath)
 	if err != nil {
 		log.Fatal(err)
+		return ""
 	}
 
 	filename := filepath.Base(sourcePath)
 	if err != nil {
 		log.Fatal(err)
+		return ""
 	}
 
 	tempFileName := fmt.Sprintf("%s/%s.raw", tmpPath, filename)
@@ -25,25 +27,21 @@ func Generate(sourcePath string, jsonPath string, tmpPath string) {
 	rawFile, err := os.Open(tempFileName)
 	if err != nil {
 		log.Fatal(err)
+		return ""
 	}
 
 	minimumValues, maximumValues := extractMinMaxValues(sourcePath, rawFile)
+	os.Remove(tempFileName)
 	percents := convertToPercentage(minimumValues, maximumValues)
 
 	result, err := json.Marshal(percents)
+
 	if err != nil {
 		log.Fatal(err)
+		return ""
 	}
 
-	jsonFile, err := os.Create(jsonPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err := jsonFile.Write(result); err != nil {
-		log.Fatal(err)
-	}
-	os.Remove(tempFileName)
+	return string(result)
 }
 
 func convertToPercentage(minimumValues []int64, maximumValues []int64) []float64 {
