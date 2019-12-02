@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
 )
@@ -60,7 +61,16 @@ func convertToPercentage(minimumValues []int64, maximumValues []int64) []float64
 	highestHeightInFloat64 := float64(highestHeight)
 
 	for i := 0; i < width; i++ {
-		heights[i] = float64(heightsInInt64[i]) / highestHeightInFloat64
+		heights[i] = toFixed(float64(heightsInInt64[i])/highestHeightInFloat64, 2)
 	}
 	return heights
+}
+
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
+}
+
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
 }
