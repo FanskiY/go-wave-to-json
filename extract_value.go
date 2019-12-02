@@ -18,13 +18,13 @@ const (
 	MIN_AUDIO_VALUE int64 = -65536
 )
 
-func extractMinMaxValues(sourcePath string, rawFile *os.File) ([]int64, []int64) {
+func extractMinMaxValues(sourcePath string, rawFile *os.File, widthCount float64) ([]int64, []int64) {
 	rawfileInfo, err := rawFile.Stat()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	widthInFloat := 69.0
+	widthInFloat := widthCount
 	segmentSize := int(float64(rawfileInfo.Size())/widthInFloat+0.5) / NUMBER_OF_BYTES
 	width := int(widthInFloat)
 	maximumValues := make([]int64, width)

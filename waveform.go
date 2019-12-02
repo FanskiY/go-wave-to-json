@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func Generate(sourcePath string, tmpPath string) string {
+func Generate(sourcePath string, tmpPath string, widthCount float64) string {
 	sourceFilename, err := filepath.Abs(sourcePath)
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +30,7 @@ func Generate(sourcePath string, tmpPath string) string {
 		return ""
 	}
 
-	minimumValues, maximumValues := extractMinMaxValues(sourcePath, rawFile)
+	minimumValues, maximumValues := extractMinMaxValues(sourcePath, rawFile, widthCount)
 	os.Remove(tempFileName)
 	percents := convertToPercentage(minimumValues, maximumValues)
 
